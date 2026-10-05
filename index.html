@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Приморье: маршрут по десяти местам</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,500&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b2a3b;--sea:#0b5d7a;--sea2:#14a3b8;--taiga:#2c7a4b;--maple:#ff6b4a;--sun:#ffc857;--mist:#e9f6f3;--card:#fff;--line:#c3e0da;--a:#ff6b4a;
+--serif:"Alegreya",Georgia,serif;--sans:"Golos Text",system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root{--mist:#0a1d27;--card:#12303d;--ink:#e8f3f1;--line:#244a58;--taiga:#8fd3ab}}
+*{box-sizing:border-box}
+html{height:100%}
+body{margin:0;font:16px/1.55 var(--sans);color:var(--ink);background:radial-gradient(900px 500px at 105% 0,rgba(255,200,87,.3),transparent 60%),radial-gradient(800px 600px at -5% 35%,rgba(20,163,184,.18),transparent 60%),var(--mist);padding-bottom:env(safe-area-inset-bottom,0px)}
+header{position:relative;overflow:hidden;color:#fff;padding:calc(26px + env(safe-area-inset-top,0px)) clamp(16px,4vw,48px) 58px;background:linear-gradient(115deg,#0b5d7a,#14a3b8 55%,#6fcfb2)}
+header::before{content:"";position:absolute;right:5%;top:-70px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,#fff3c9 0,#ffc857 45%,rgba(255,200,87,0) 70%)}
+header>*{position:relative}
+h1{font:700 clamp(32px,5.4vw,58px)/1.02 var(--serif);margin:0 0 10px;text-shadow:0 2px 14px rgba(5,40,55,.35)}
+header p{margin:0 0 18px;max-width:50ch;font-size:17px;opacity:.95}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button{font:500 15px var(--sans);color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:8px 18px;cursor:pointer}
+nav button[aria-selected=true]{background:#fff;color:var(--sea)}
+.wave{position:absolute;left:0;bottom:-1px;width:100%;height:36px;fill:var(--mist)}
+button:focus-visible,.pin:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+main{padding:8px clamp(16px,4vw,48px) 56px}
+section{display:none}section.on{display:block}
+.mapwrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:860px){.mapwrap{grid-template-columns:1fr}}
+svg#map{width:100%;height:auto;max-height:80vh;border-radius:22px;display:block;border:4px solid #fff;box-shadow:0 22px 44px -20px rgba(11,42,59,.6)}
+.pin{cursor:pointer}.pm{transform-origin:0 0;transition:transform .25s}.pin.on .pm,.pin:hover .pm{transform:scale(1.3)}
+.pin text.n{font:700 13px var(--sans);fill:#fff;text-anchor:middle;pointer-events:none}
+.pin text.l{font:600 13px var(--sans);fill:#0b2a3b;pointer-events:none}
+.halo{fill:none;stroke:#fff;stroke-width:2.5;opacity:0}.on .halo{animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{from{r:8;opacity:1}to{r:30;opacity:0}}
+.route{fill:none;stroke:#fff;stroke-width:3;stroke-dasharray:2 8;stroke-linecap:round;animation:dash 1.6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-20}}
+.done{fill:none;stroke:#ff6b4a;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:0 200;transition:stroke-dasharray .7s}
+@media(prefers-reduced-motion:reduce){.route,.on .halo{animation:none}.done,.pm{transition:none}}
+.panel{background:var(--card);border-radius:22px;overflow:hidden;border-top:7px solid var(--a);box-shadow:0 22px 44px -26px rgba(11,42,59,.6)}
+.ph{position:relative}.photo{aspect-ratio:3/2;background:var(--sea2)}.photo img,.photo svg{width:100%;height:100%;object-fit:cover;display:block}
+.badge{position:absolute;left:16px;top:16px;width:46px;height:46px;border-radius:50%;background:var(--a);color:#fff;font:700 24px var(--serif);display:grid;place-items:center;border:3px solid #fff}
+.pbody{padding:20px 24px 24px}
+.pbody h2{font:700 34px/1.05 var(--serif);margin:0 0 4px}
+.sub{color:var(--taiga);font-weight:600;margin:0 0 12px}
+.pbody p{margin:0 0 14px;max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none}
+.chips li{background:color-mix(in srgb,var(--a) 14%,var(--card));border:1px solid color-mix(in srgb,var(--a) 45%,transparent);border-radius:999px;padding:3px 13px;font-size:14px}
+.nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.nav button{font:600 15px var(--sans);padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:inherit;cursor:pointer}
+.nav button.p{background:var(--a);border-color:var(--a);color:#fff}
+.nav span{margin-left:auto;font-size:14px;opacity:.7}
+.hint{font-size:14px;opacity:.75;margin:12px 4px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding-top:12px}
+.card{padding:0;text-align:left;font:inherit;color:inherit;background:var(--card);border:0;border-top:6px solid var(--a);border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 14px 30px -20px rgba(11,42,59,.6);transition:transform .2s}
+.card:hover{transform:translateY(-4px)}
+.card .photo{aspect-ratio:16/10}.card div.t{padding:12px 16px 16px}.card b{font:700 21px var(--serif);display:block}.card small{opacity:.75}
+.text{max-width:70ch;padding-top:12px}.text h2{font:700 30px var(--serif);margin:30px 0 8px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:22px 0}
+.facts div{background:var(--card);border-radius:14px;border-left:6px solid var(--maple);padding:12px 16px}.facts b{font:700 23px var(--serif);display:block}
+</style>
+</head>
+<body>
+<header>
+  <h1>Приморье<br>за десять остановок</h1>
+  <p>Маршрут от мыса Гамова до Сихотэ-Алиня: море, тайга, озёра и маяки</p>
+  <nav role="tablist" aria-label="Разделы">
+    <button role="tab" data-t="map" aria-selected="true">Карта</button>
+    <button role="tab" data-t="places" aria-selected="false">Все места</button>
+    <button role="tab" data-t="about" aria-selected="false">О крае</button>
+    <button role="tab" data-t="tips" aria-selected="false">Советы</button>
+  </nav>
+  <svg class="wave" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22Q75 0 150 22T300 22 450 22 600 22 750 22 900 22 1050 22 1200 22V40H0z"/></svg>
+</header>
+<main>
+<section id="map-s" class="on">
+  <div class="mapwrap">
+    <div>
+      <svg id="map" viewBox="0 0 600 570" role="img" aria-label="Схематичная карта Приморского края с маршрутом из десяти точек"></svg>
+      <p class="hint">Нажмите на точку, чтобы увидеть место. Карта схематичная.</p>
+    </div>
+    <article class="panel" aria-live="polite">
+      <div class="ph"><div class="photo" id="photo"></div><span class="badge" id="bn"></span></div>
+      <div class="pbody">
+        <h2 id="pt"></h2><p class="sub" id="ps"></p><p id="px"></p>
+        <ul class="chips" id="pc"></ul>
+        <div class="nav"><button id="prev">Назад</button><button id="next" class="p">Дальше по маршруту</button><span id="cnt"></span></div>
+      </div>
+    </article>
+  </div>
+</section>
+<section id="places-s"><div class="grid" id="grid"></div></section>
+<section id="about-s" class="text">
+  <h2>Край у Японского моря</h2>
+  <p>Приморский край лежит на юго-востоке России. Здесь тайга сходится с морским побережьем, а на юге растут лианы и маньчжурский орех. Столица края — Владивосток.</p>
+  <div class="facts">
+    <div><b>Японское море</b>Длинное побережье с бухтами и мысами</div>
+    <div><b>Амурский тигр</b>Живёт в тайге и заповедниках края</div>
+    <div><b>ЮНЕСКО</b>Сихотэ-Алинский заповедник — объект всемирного наследия</div>
+    <div><b>Китай</b>Общая граница на западе, через озеро Ханка</div>
+  </div>
+  <p>Маршрут на карте идёт с юга на север: от мыса Гамова через Владивосток и озеро Ханка к побережью Японского моря и Тернею.</p>
+</section>
+<section id="tips-s" class="text">
+  <h2>Когда ехать</h2>
+  <p>Лучше всего — сентябрь и начало октября: тепло, сухо, тайга в красках. Июль и август жаркие и влажные, возможны тайфуны и ливни.</p>
+  <h2>Как перемещаться</h2>
+  <p>Основные города связаны трассами и поездами. До Лазо, Ольги и Тернея дороги длиннее и сложнее: закладывайте на каждый участок полдня и больше.</p>
+  <h2>Что взять</h2>
+  <p>Непромокаемую куртку, средство от клещей и комаров, закрытую обувь для троп. Для заповедников нужны пропуска, оформите их заранее.</p>
+</section>
+</main>
+<script>
+// Фото: положите файлы в папку img/ с именами из поля photo. Пока файла нет, показывается иллюстрация.
+const P=[
+{n:"Мыс Гамова",s:"Хасанский район",lon:131.2,lat:42.55,photo:"img/01.jpg",art:["#7fb4c9","#26566a","#143c4e","sea"],
+ t:"Южная оконечность края: скалы, небольшие бухты и маяк на мысу. Отсюда начинается маршрут, и сразу видно, где тайга встречается с морем.",c:["Скалы и бухты","Маяк","Юг края"]},
+{n:"Владивосток",s:"Золотой мост",lon:131.9,lat:43.12,photo:"img/02.jpg",art:["#f3b27a","#335f77","#17384a","bridge"],
+ t:"Главный город края на сопках у бухты Золотой Рог. Вантовые мосты, морской порт и набережные задают лицо города.",c:["Золотой мост","Бухта Золотой Рог","Столица края"]},
+{n:"Уссурийск",s:"Уссурийская тайга",lon:132.15,lat:43.68,photo:"img/03.jpg",art:["#b9d6a0","#2f6b43","#1b4430","trees"],
+ t:"К северу от Владивостока начинается настоящая уссурийская тайга: смешанный лес с лианами, кедрами и дубами, нехарактерный для таких широт.",c:["Смешанный лес","Тропы","Осенние краски"]},
+{n:"Озеро Ханка",s:"Пограничное озеро",lon:132.4,lat:44.9,photo:"img/04.jpg",art:["#f2d3a0","#4f8aa0","#2e6d5b","lake"],
+ t:"Крупнейшее пресноводное озеро Дальнего Востока. Берег делят Россия и Китай. В конце лета на мелководье цветут лотосы.",c:["Лотосы","Птицы","Пограничье"]},
+{n:"Находка",s:"Порт на Японском море",lon:132.88,lat:42.82,photo:"img/05.jpg",art:["#e7b9a0","#2b6074","#17384a","port"],
+ t:"Город-порт с незамерзающей бухтой. Обзорные площадки на сопках, мысы и пляжи рядом с городом.",c:["Порт","Бухта","Пляжи"]},
+{n:"Лазовский заповедник",s:"Побережье и тайга",lon:133.95,lat:43.3,photo:"img/06.jpg",art:["#a8d1c4","#2a6a58","#154236","trees"],
+ t:"Заповедник, где горы Сихотэ-Алиня спускаются к морю. Здесь обитают амурский тигр и дальневосточный леопард, а тропы ведут к чистым бухтам.",c:["Тигр и леопард","Бухты","Горы"]},
+{n:"Ольга",s:"Посёлок на заливе",lon:135.3,lat:43.73,photo:"img/07.jpg",art:["#f0c9a2","#3e6f85","#1c4457","sea"],
+ t:"Один из старейших посёлков северного побережья. Тихий залив, сопки вокруг и ощущение края карты.",c:["Залив","Тишина","Сопки"]},
+{n:"Дальнегорск",s:"Горный город",lon:135.57,lat:44.55,photo:"img/08.jpg",art:["#c8c4dd","#4d5d7a","#2a3550","mountains"],
+ t:"Город в горной долине с шахтёрской историей. Вокруг скалы, ущелья и месторождения минералов.",c:["Горы","Минералы","Ущелья"]},
+{n:"Пластун",s:"Бухта у устья реки",lon:136.3,lat:44.8,photo:"img/09.jpg",art:["#f6d9a8","#3d7b80","#235a5c","sea"],
+ t:"Пустынное побережье с устьем реки и широкой бухтой. Хорошее место, чтобы остановиться перед северным отрезком маршрута.",c:["Бухта","Устье реки","Дикий берег"]},
+{n:"Терней",s:"Сихотэ-Алинь",lon:136.45,lat:45.05,photo:"img/10.jpg",art:["#ffc88a","#2e5d4b","#143528","mountains"],
+ t:"Северная точка маршрута и ворота к Сихотэ-Алинскому заповеднику, объекту всемирного наследия ЮНЕСКО. Тайга здесь почти нетронутая.",c:["ЮНЕСКО","Тайга","Конец маршрута"]}];
+const OUT=[[130.55,42.32],[130.95,42.3],[131.2,42.55],[131.6,42.75],[131.85,43.1],[132.2,43.4],[132.7,43.2],[132.95,42.9],[132.9,42.62],[133.3,42.75],[133.9,43.2],[134.4,43.5],[135,43.55],[135.4,43.8],[135.6,44.4],[136.2,44.8],[136.7,45.2],[137.3,45.9],[137.9,46.5],[138.2,47],[136.5,47.4],[135.6,47],[134.7,46.5],[133.7,46.3],[133.1,45.5],[132.7,45.2],[132,45.3],[131.5,45.1],[131.1,44.9],[131.1,44.3],[131.4,43.5],[131.2,43],[130.7,42.7]];
+const X=l=>((l-130.4)*72+20).toFixed(1),Y=a=>((47.6-a)*100+20).toFixed(1);
+const $=i=>document.getElementById(i);
+function art(a){const[sky,h1,h2,m]=a;let g="";
+ if(m=="bridge")g='<path d="M60 170H340" stroke="#fff" stroke-width="5"/><path d="M110 170V90M290 170V90" stroke="#fff" stroke-width="5"/><path d="M110 90Q200 165 290 90M110 90L40 170M290 90L360 170" stroke="#fff" fill="none" stroke-width="2.5"/>';
+ if(m=="trees")g=[40,95,150,215,270,330].map((x,i)=>`<path d="M${x} ${190-i%2*12}l22 -70 22 70z" fill="${h2}"/>`).join("");
+ if(m=="lake")g='<ellipse cx="120" cy="215" rx="26" ry="7" fill="#f4b6c4"/><ellipse cx="250" cy="228" rx="30" ry="8" fill="#f4b6c4"/><path d="M60 250V200M300 250V190M320 250V205" stroke="#2e6d5b" stroke-width="3"/>';
+ if(m=="port")g='<path d="M240 190V100h12v90M240 108H330" stroke="#fff" stroke-width="5"/><rect x="60" y="165" width="100" height="26" fill="#fff" opacity=".85"/>';
+ if(m=="sea")g='<path d="M0 205q30-12 60 0t60 0 60 0 60 0 60 0 60 0V260H0z" fill="#fff" opacity=".25"/>';
+ return`<svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g${m}${h1.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky}"/><stop offset="1" stop-color="#fff" stop-opacity=".9"/></linearGradient></defs><rect width="400" height="260" fill="url(#g${m}${h1.slice(1)})"/><circle cx="300" cy="70" r="30" fill="#fff" opacity=".8"/><path d="M0 170L70 110 140 160 220 90 310 165 400 120V260H0z" fill="${h1}"/><path d="M0 200L90 150 180 195 270 140 400 205V260H0z" fill="${h2}"/>${g}</svg>`}
+function pic(p,el){el.innerHTML="";const i=new Image();i.alt=p.n+": "+p.s;i.onerror=()=>{el.innerHTML=art(p.art)};i.src=p.photo;el.appendChild(i)}
+// карта
+const m=$("map"),W=600,H=570,COLS=["#1e88c7","#e0457b","#3f9b4a","#12a0b5","#7a5bd6","#2e9e6b","#f08a3c","#6b7fa8","#d9a21b","#c2452d"];
+const pts=P.map(p=>[+X(p.lon),+Y(p.lat)]),poly=OUT.map(o=>[+X(o[0]),+Y(o[1])]);
+const land="M"+poly.map(q=>q.join(",")).join("L")+"Z";
+const inside=(x,y)=>{let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const[a,b]=poly[i],[d,e]=poly[j];if((b>y)!=(e>y)&&x<(d-a)*(y-b)/(e-b)+a)c=!c}return c};
+let sd=11;const rnd=()=>(sd=sd*16807%2147483647)/2147483647;
+const near=(x,y,r)=>pts.some(q=>Math.hypot(q[0]-x,q[1]-y)<r);
+const LK=[+X(132.4),+Y(44.9)];
+let trees="",waves="",mts="",n=0,w=0;
+for(let k=0;k<3000&&n<240;k++){const x=rnd()*W,y=20+rnd()*(H-40);if(!inside(x,y)||near(x,y,28)||Math.hypot((x-LK[0])/42,(y-LK[1])/50)<1)continue;n++;const r=rnd(),c=r<.14?"#f08a3c":r<.28?"#e8b92f":r<.6?"#3f9b4a":"#2c7a4b";trees+=`<path d="M${x.toFixed(0)} ${y.toFixed(0)-10}l6 9h-12zM${x.toFixed(0)} ${y.toFixed(0)-5}l7 9h-14z" fill="${c}"/>`}
+for(let k=0;k<600&&w<50;k++){const x=rnd()*W,y=rnd()*H;if(inside(x,y)||near(x,y,40)||(x>480&&y>440))continue;w++;waves+=`<path d="M${x.toFixed(0)} ${y.toFixed(0)}q4-4 8 0t8 0" stroke="#fff" stroke-width="1.6" fill="none" opacity=".3"/>`}
+const R=[[133.6,43.35],[134.1,43.65],[134.6,43.95],[135,44.35],[135.4,44.85],[135.9,45.4],[136.3,45.9],[136.8,46.5]].map(o=>[+X(o[0]),+Y(o[1])]);
+const ms=[];R.forEach((a,i)=>{const b=R[i+1];if(!b)return;for(let t=0;t<4;t++){const x=a[0]+(b[0]-a[0])*t/4+rnd()*20-10,y=a[1]+(b[1]-a[1])*t/4+rnd()*16-8;if(!near(x,y,34))ms.push([x,y])}});
+ms.sort((a,b)=>a[1]-b[1]).forEach(([x,y])=>{x=x.toFixed(0);y=y.toFixed(0);mts+=`<path d="M${x-15} ${y}L${x} ${y-24}L${+x+15} ${y}Z" fill="#9a8458"/><path d="M${x} ${y-24}L${x-6} ${y-13}L${x} ${y-16}L${+x+6} ${y-13}Z" fill="#fff"/>`});
+const rv=a=>"M"+a.map(o=>X(o[0])+","+Y(o[1])).join("L");
+const dist=[0];pts.forEach((q,i)=>{if(i)dist.push(dist[i-1]+Math.hypot(q[0]-pts[i-1][0],q[1]-pts[i-1][1]))});
+const rd="M"+pts.map(q=>q.join(",")).join("L");
+const boat=(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-9 0h18l-4 6h-10z" fill="#fff"/><path d="M0-2V-18l10 14z" fill="#ffc857"/></g>`;
+m.innerHTML=`<defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b5d7a"/><stop offset="1" stop-color="#14a3b8"/></linearGradient><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe9a0"/><stop offset="1" stop-color="#8fcf7a"/></linearGradient><linearGradient id="kg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fe3ee"/><stop offset="1" stop-color="#2f9fc4"/></linearGradient><filter id="bl"><feGaussianBlur stdDeviation="14"/></filter><clipPath id="lc"><path d="${land}"/></clipPath></defs>
+<rect width="${W}" height="${H}" fill="url(#sg)"/>${waves}
+${[52,36,22,10].map(k=>`<path d="${land}" fill="none" stroke="#8ff0e6" stroke-width="${k}" stroke-linejoin="round" opacity=".13"/>`).join("")}
+<path d="${land}" fill="url(#lg)" stroke="#fbf1c8" stroke-width="4" stroke-linejoin="round"/>
+<g clip-path="url(#lc)"><ellipse cx="${LK[0]}" cy="${LK[1]+30}" rx="120" ry="90" fill="#e5f58a" opacity=".7" filter="url(#bl)"/><ellipse cx="190" cy="370" rx="70" ry="60" fill="#f3d98a" opacity=".5" filter="url(#bl)"/><polyline points="${R.map(q=>q.join(",")).join(" ")}" fill="none" stroke="#c9ad73" stroke-width="54" opacity=".6" filter="url(#bl)"/>
+<path d="${rv([[131.5,44.5],[131.9,44.0],[132.1,43.6],[132.3,43.4]])}" fill="none" stroke="#5fc4e0" stroke-width="3" stroke-linecap="round"/><path d="${rv([[133.3,44.8],[133.0,44.1],[132.9,43.5],[132.95,42.95]])}" fill="none" stroke="#5fc4e0" stroke-width="3" stroke-linecap="round"/>
+${trees}${mts}</g>
+<ellipse cx="${LK[0]}" cy="${LK[1]}" rx="34" ry="42" fill="url(#kg)" stroke="#fff" stroke-width="2.5"/><g fill="#ff9fc0"><circle cx="${LK[0]-10}" cy="${LK[1]+12}" r="4"/><circle cx="${LK[0]+8}" cy="${LK[1]+22}" r="3.5"/><circle cx="${LK[0]+12}" cy="${LK[1]-6}" r="3"/></g>
+<text x="${X(130.8)}" y="${Y(46.3)}" fill="#1f6b3d" font-family="Alegreya,serif" font-style="italic" font-size="21" opacity=".8">Китай</text>
+<text x="${X(137)}" y="${Y(43.8)}" fill="#d9f4f5" font-family="Alegreya,serif" font-style="italic" font-size="23" opacity=".85">Японское море</text>
+${boat(+X(137.5),+Y(44.3))}${boat(+X(131.2),+Y(42.45)-30)}${boat(+X(137.8),+Y(46.3))}
+<g transform="translate(535 495)"><circle r="33" fill="#fff" opacity=".15"/><path d="M-34 0L0-6 34 0 0 6z" fill="#fff" opacity=".6"/><path d="M0-34L7 0 0 34-7 0z" fill="#fff"/><path d="M0-34L7 0H-7z" fill="#ff6b4a"/><text y="-40" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Golos Text,sans-serif">С</text></g>
+<g transform="translate(340 548)" stroke="#fff" stroke-width="2"><path d="M0 0H90M0-4V4M90-4V4"/><text x="45" y="-8" stroke="none" fill="#fff" text-anchor="middle" font-size="12" font-family="Golos Text,sans-serif">100 км</text></g>
+<path d="${rd}" class="route"/><path id="done" pathLength="100" d="${rd}" class="done"/>
+${P.map((p,i)=>`<g class="pin" tabindex="0" role="button" aria-label="${i+1}. ${p.n}" data-i="${i}" transform="translate(${pts[i][0]} ${pts[i][1]})"><circle class="halo" r="8"/><g class="pm"><path d="M0 0C-3-8-13-14-13-24a13 13 0 1 1 26 0C13-14 3-8 0 0z" fill="${COLS[i]}" stroke="#fff" stroke-width="2.5"/><text class="n" y="-19">${i+1}</text></g><rect x="20" y="-25" width="${(p.n.length*7.4+18).toFixed(0)}" height="21" rx="10.5" fill="#fff" opacity=".93"/><text class="l" x="29" y="-10">${p.n}</text></g>`).join("")}`;
+let cur=0;
+function show(i){cur=(i+P.length)%P.length;const p=P[cur];
+ m.querySelectorAll(".pin").forEach((g,k)=>g.classList.toggle("on",k==cur));
+ $("done").style.strokeDasharray=(dist[cur]/dist[dist.length-1]*100)+" 200";
+ document.querySelector(".panel").style.setProperty("--a",COLS[cur]);
+ pic(p,$("photo"));$("bn").textContent=cur+1;$("pt").textContent=p.n;$("ps").textContent=p.s;$("px").textContent=p.t;
+ $("pc").innerHTML=p.c.map(c=>`<li>${c}</li>`).join("");$("cnt").textContent=`${cur+1} из ${P.length}`}
+m.querySelectorAll(".pin").forEach(g=>{g.onclick=()=>show(+g.dataset.i);g.onkeydown=e=>{if(e.key=="Enter"||e.key==" "){e.preventDefault();show(+g.dataset.i)}}});
+$("prev").onclick=()=>show(cur-1);$("next").onclick=()=>show(cur+1);
+// карточки
+$("grid").innerHTML=P.map((p,i)=>`<button class="card" data-i="${i}" style="--a:${COLS[i]}"><div class="photo"></div><div class="t"><b>${i+1}. ${p.n}</b><small>${p.s}</small></div></button>`).join("");
+document.querySelectorAll(".card").forEach(c=>{const i=+c.dataset.i;pic(P[i],c.querySelector(".photo"));c.onclick=()=>{tab("map");show(i);window.scrollTo({top:0})}});
+// вкладки
+function tab(t){document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id==t+"-s"));document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t==t));try{history.replaceState(null,"","#"+t)}catch(e){}}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
+const h=location.hash.slice(1);if(["map","places","about","tips"].includes(h))tab(h);
+show(0);
+</script>
+</body>
+</html>
